@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64,linux/arm64 python:3.10-slim-buster
+FROM python:3.10-slim-buster
 
 WORKDIR /src
 
