@@ -9,10 +9,11 @@ phases:
     commands:
       - echo Starting build at `date`
       - echo Building the Docker image... 
-      - mkdir -p ~/.docker/cli-plugins
-      - curl -L https://github.com/docker/buildx/releases/download/v0.11.0/buildx-v0.11.0.linux-amd64 -o ~/.docker/cli-plugins/docker-buildx         
-      - chmod +x ~/.docker/cli-plugins/docker-buildx
-      - docker buildx create --name mybuilder --use
+      # - mkdir -p ~/.docker/cli-plugins
+      # - curl -L https://github.com/docker/buildx/releases/download/v0.11.0/buildx-v0.11.0.linux-amd64 -o ~/.docker/cli-plugins/docker-buildx         
+      # - chmod +x ~/.docker/cli-plugins/docker-buildx
+      # - docker buildx create --name mybuilder --use
+      - docker buildx create --use
       - docker buildx inspect --bootstrap
       - docker build --platform linux/amd64 -t $IMAGE_REPO_NAME:$IMAGE_TAG -f analytics/Dockerfile .
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG      
@@ -21,3 +22,7 @@ phases:
       - echo Completed build at `date`
       - echo Pushing the Docker image...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+phases:
+  pre_build:
+    runtime-versions:
+      docker: 20
